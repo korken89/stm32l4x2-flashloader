@@ -2,13 +2,7 @@
 
 ## Instructions to run
 
-1. Generate binary:
-
-```console
-cargo objcopy --release --bin stm32l4x2_flashloader -- -O binary loader.bin
-```
-
-2. Generate the YAML file:
+Generate the YAML file:
 
 ```console
 target-gen elf target/thumbv7m-none-eabi/release/stm32l4x2_flashloader test.yml
