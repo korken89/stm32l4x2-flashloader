@@ -297,6 +297,11 @@ const SECTOR_END: FlashSector = FlashSector {
     address: 0xffff_ffff,
 };
 
+#[link_section = "PrgData"]
+#[used]
+static DUMMY_DATA: u32 = 4;
+
+/// Dummy reset.
 #[no_mangle]
 #[inline(never)]
 #[link_section = "PrgCode"]

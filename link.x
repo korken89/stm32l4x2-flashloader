@@ -32,26 +32,24 @@ ENTRY(Reset);
 /* # Sections */
 SECTIONS
 {
-  PROVIDE(_stack_start = ORIGIN(RAM) + LENGTH(RAM));
+  PrgCode : {
+      . = ALIGN(4);
 
-  /* ### .text */
-  PrgCode :
-  {
-    *(PrgCode PrgCode.* .text .text.*);
+      KEEP(*(PrgCode))
+      KEEP(*(PrgCode.*))
+
+      . = ALIGN(4);
+  }  > FLASH
+
+  PrgData . : {
+      KEEP(*(PrgData))
+      KEEP(*(PrgData.*))
   } > FLASH
 
-  DeviceData (INFO) :
-  {
-    KEEP(*(DeviceData DeviceData.*));
-  }
-
-  /* ## .got */
-  /* Dynamic relocations are unsupported. This section is only used to detect relocatable code in
-     the input files and raise an error if relocatable code is found */
-  .got (NOLOAD) :
-  {
-    KEEP(*(.got .got.*));
-  }
+  DeviceData . : {
+      KEEP(*(DeviceData))
+      KEEP(*(DeviceData.*))
+  } > FLASH
 
   /* ## Discarded sections */
   /DISCARD/ :
