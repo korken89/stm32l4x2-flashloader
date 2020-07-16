@@ -22,8 +22,7 @@
 /* This will be provided by the user (see `memory.x`) or by a Board Support Crate */
 MEMORY
 {
-    FLASH :       ORIGIN = 0x20000000, LENGTH = 16K
-    RAM :       ORIGIN = 0x20004000, LENGTH = 16K
+    FLASH :       ORIGIN = 0, LENGTH = 16K
 }
 
 /* # Entry point = reset vector */
