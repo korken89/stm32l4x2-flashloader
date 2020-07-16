@@ -8,10 +8,6 @@ edition = "2018"
 panic-never  = "0.1.0"
 #panic-halt   = "0.2.0"
 
-[dependencies.cortex-m-rt]
-version = "0.6"
-features = ["device"]
-
 [dependencies.stm32l4xx-hal]
 # version = "0.5.0"
 # path = "../../stm32l4xx-hal"

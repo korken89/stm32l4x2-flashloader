@@ -7,7 +7,6 @@
 // [ARM CMSIS-Pack documentation]: https://arm-software.github.io/CMSIS_5/Pack/html/algorithmFunc.html
 
 //#[cfg(debug_assertions)]
-use cortex_m_rt::entry;
 use panic_never as _;
 use stm32l4xx_hal::stm32::FLASH;
 
@@ -246,10 +245,10 @@ const fn sectors() -> [FlashSector; 512] {
 #[allow(non_upper_case_globals)]
 #[no_mangle]
 #[used]
-#[link_section = ".rodata.0"]
+#[link_section = "DeviceData"]
 pub static FlashDevice: FlashDeviceDescription = FlashDeviceDescription {
     vers: 0x0101,
-    dev_name: [0u8; 128],
+    dev_name: [b'a'; 128],
     dev_type: 1,
     dev_addr: 0x2000_0000,
     device_size: 1024 * 128,
@@ -298,9 +297,10 @@ const SECTOR_END: FlashSector = FlashSector {
     address: 0xffff_ffff,
 };
 
-// Dummy main
-#[entry]
-unsafe fn main() -> ! {
+#[no_mangle]
+#[inline(never)]
+#[link_section = ".text"]
+pub extern "C" fn Reset() -> ! {
     Init(0, 0, 0);
     EraseSector(0);
     EraseChip();
@@ -310,9 +310,3 @@ unsafe fn main() -> ! {
         continue;
     }
 }
-
-/// Vector table, as no vectors are used by the bootloader there is no need to fill out the entire
-/// vector table. This is a huge space save.
-#[link_section = ".vector_table.interrupts"]
-#[no_mangle]
-pub static __INTERRUPTS: [usize; 1] = [0];
