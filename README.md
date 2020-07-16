@@ -28,7 +28,7 @@ flash_algorithms:
     pc_program_page: 217
     pc_erase_sector: 1
     pc_erase_all: 99
-    data_section_offset: 536871536
+    data_section_offset: 624
     flash_properties:
       address_range:
         start: 536870912
