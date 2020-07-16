@@ -50,7 +50,7 @@ use stm32l4xx_hal::stm32::FLASH;
 // }
 //
 
-#[link_section = ".text.flashloader.2"]
+#[link_section = "PrgCode"]
 /// Wait till last flash operation is complete
 fn wait() -> i32 {
     let sr = unsafe { &(*FLASH::ptr()).sr };
@@ -59,7 +59,7 @@ fn wait() -> i32 {
     status()
 }
 
-#[link_section = ".text.flashloader.3"]
+#[link_section = "PrgCode"]
 fn status() -> i32 {
     let sr = unsafe { &(*FLASH::ptr()).sr }.read();
 
@@ -81,7 +81,7 @@ fn status() -> i32 {
 /// Returns 0 on success, 1 on failure.
 #[no_mangle]
 #[inline(never)]
-#[link_section = ".text.flashloader.4"]
+#[link_section = "PrgCode"]
 pub extern "C" fn EraseSector(adr: u32) -> i32 {
     let cr = unsafe { &(*FLASH::ptr()).cr };
 
@@ -111,7 +111,7 @@ pub extern "C" fn EraseSector(adr: u32) -> i32 {
 /// Returns 0 on success, 1 on failure.
 #[no_mangle]
 #[inline(never)]
-#[link_section = ".text.flashloader.5"]
+#[link_section = "PrgCode"]
 pub extern "C" fn EraseChip() -> i32 {
     let cr = unsafe { &(*FLASH::ptr()).cr };
 
@@ -131,7 +131,7 @@ const FLASH_KEY2: u32 = 0xCDEF_89AB;
 /// Setup the device for the
 #[no_mangle]
 #[inline(never)]
-#[link_section = ".text.flashloader.6"]
+#[link_section = "PrgCode"]
 pub extern "C" fn Init(_adr: u32, _clk: u32, _fnc: u32) -> i32 {
     // let spi = unsafe { &(*QSPI0::ptr()) };
 
@@ -184,7 +184,7 @@ fn write_native(address: usize, data: u64) -> i32 {
 
 #[no_mangle]
 #[inline(never)]
-#[link_section = ".text.flashloader.7"]
+#[link_section = "PrgCode"]
 pub extern "C" fn ProgramPage(adr: u32, sz: u32, buf: *const u8) -> i32 {
     // Handle aligned address data
     let data = unsafe { core::slice::from_raw_parts(buf, sz as usize) };
@@ -219,7 +219,7 @@ pub extern "C" fn ProgramPage(adr: u32, sz: u32, buf: *const u8) -> i32 {
 
 #[no_mangle]
 #[inline(never)]
-#[link_section = ".text.flashloader.1"]
+#[link_section = "PrgCode"]
 pub extern "C" fn UnInit(_fnc: u32) -> i32 {
     // Nothing to de-init
     let cr = unsafe { &(*FLASH::ptr()).cr };
@@ -299,7 +299,7 @@ const SECTOR_END: FlashSector = FlashSector {
 
 #[no_mangle]
 #[inline(never)]
-#[link_section = ".text"]
+#[link_section = "PrgCode"]
 pub extern "C" fn Reset() -> ! {
     Init(0, 0, 0);
     EraseSector(0);
